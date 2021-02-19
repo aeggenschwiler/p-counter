@@ -1,0 +1,11 @@
+{
+  "minMuleVersion": "4.2.2-hf1",
+      "classLoaderModelLoaderDescriptor": {
+        "id": "mule",
+        "attributes": {
+            "exportedPackages": [
+                "com.mulesoft.aeggenschwiler.sleepdemo"
+            ]
+        }
+    }
+}

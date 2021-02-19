@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:java="http://www.mulesoft.org/schema/mule/java"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="sleeping-appFlow" doc:id="2c57ad8b-62b6-4e91-ad41-6dbb13408879" >
+		<file:listener doc:name="On New or Updated File" doc:id="5a8edf8e-eea4-41f4-80da-90019cca12e7" directory="/Users/aeggenschwiler/Documents/projects/eba/xmlstream/tmp/trigger" autoDelete="true" timeBetweenSizeCheckUnit="SECONDS" applyPostActionWhenFailed="false" timeBetweenSizeCheck="10">
+			<scheduling-strategy>
+				<fixed-frequency startDelay="1000" frequency="200" />
+			</scheduling-strategy>
+		</file:listener>
+		<set-variable value="#[now()]" doc:name="startTime" doc:id="8b4f05ed-b1f3-44c1-93ad-1ce61343182b" variableName="startTime"/>
+		<java:invoke-static doc:name="Invoke static" doc:id="a7535158-62ad-4edf-8abb-3b75462c9f5a" class="com.mulesoft.aeggenschwiler.sleepdemo.Sleeper" method="process(java.io.InputStream)" target="invokeResult">
+			<java:args ><![CDATA[#[{arg0 : payload}]]]></java:args>
+		</java:invoke-static>
+		<set-variable value="#[now()]" doc:name="endTime" doc:id="c3ae0ada-e1cd-4151-8890-f8f08dfd2039" variableName="endTIme"/>
+		<logger level="INFO" doc:name="Logger timing" doc:id="3862da53-88f1-456d-b79f-3efec7e71d7d" message="#['\nAE&gt;&gt;&gt; startTime: ' ++ vars.startTime as String ++ '\nAE&gt;&gt;&gt; endTime  : ' ++ vars.endTime as String ++ '\nAE&gt;&gt;&gt; file len : ' ++ vars.invokeResult]"/>
+	</flow>
+</mule>
